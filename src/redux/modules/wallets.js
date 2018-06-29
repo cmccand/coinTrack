@@ -1,7 +1,7 @@
 import config from '../../config';
-export const LOAD_TRANSACTIONS = 'cointracker/wallet/LOAD_TRANSACTIONS';
-export const LOAD_TRANSACTIONS_SUCCESS = 'cointracker/wallet/LOAD_TRANSACTIONS_SUCCESS';
-export const LOAD_TRANSACTIONS_FAIL = 'cointracker/wallet/LOAD_TRANSACTIONS_FAIL';
+export const LOAD_WALLETS = 'cointracker/wallets/LOAD_WALLETS';
+export const LOAD_WALLETS_SUCCESS = 'cointracker/wallets/wallets/LOAD_WALLETS_SUCCESS';
+export const LOAD_WALLETS_FAIL = 'cointracker/wallets/wallets/LOAD_WALLETS_FAIL';
 
 const initialState = {
   loading: false
@@ -9,18 +9,18 @@ const initialState = {
 
 export default function reducer(state = initialState, action={}) {
   switch (action.type) {
-    case LOAD_TRANSACTIONS:
+    case LOAD_WALLETS:
       return {
         ...state,
         loading: true
       };
-    case LOAD_TRANSACTIONS_SUCCESS:
+    case LOAD_WALLETS_SUCCESS:
       return {
         ...state,
         loading: false,
-        transactions: action.result.wallet_names
+        wallets: action.result.wallet_names
       }
-    case LOAD_TRANSACTIONS_FAIL:
+    case LOAD_WALLETS_FAIL:
       return {
         ...state,
         loading: false,
@@ -31,35 +31,36 @@ export default function reducer(state = initialState, action={}) {
   }
 }
 
-function loadTransactions() {
+function loadWallets() {
   return {
-    type: LOAD_TRANSACTIONS
+    type: LOAD_WALLETS
   }
 }
 
-function loadTransactionsSuccess(result) {
+function loadWalletsSuccess(result) {
+  console.log(result);
   return {
-    type: LOAD_TRANSACTIONS_SUCCESS,
+    type: LOAD_WALLETS_SUCCESS,
     result
   }
 }
 
-function loadTransactionsFail(error) {
+function loadWalletsFail(error) {
   return {
-    type: LOAD_TRANSACTIONS_FAIL,
+    type: LOAD_WALLETS_FAIL,
     error
   }
 }
 
 export function loadAllWallets() {
   return dispatch => {
-    dispatch(loadTransactions());
+    dispatch(loadWallets());
     const token = config.token;
     return fetch(`https://api.blockcypher.com/v1/bcy/test/wallets?token=${token}`)
     .then(res => res.json()).then(response => {
-      dispatch(loadTransactionsSuccess(response))
+      dispatch(loadWalletsSuccess(response))
     }).catch(error => {
-      dispatch(loadTransactionsFail(error));
+      dispatch(loadWalletsFail(error));
     });
   }
 }

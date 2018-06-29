@@ -1,0 +1,11 @@
+.wallet-name {
+  list-style-type: none;
+  cursor: pointer;
+  text-transform: capitalize;
+}
+
+.address {
+  list-style-type: none;
+  cursor: pointer;
+  text-transform: capitalize;
+}
